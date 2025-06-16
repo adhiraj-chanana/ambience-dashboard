@@ -1,0 +1,23 @@
+# Node.js frontend
+dashboard-frontend/node_modules/
+dashboard-frontend/dist/
+dashboard-frontend/.env
+
+# Python backend
+dashboard-backend/__pycache__/
+dashboard-backend/.env
+dashboard-backend/projects.db
+dashboard-backend/venv/
+dashboard-backend/.venv/
+dashboard-backend/*.sqlite3
+dashboard-backend/*.pyc
+
+# Mac OS junk
+.DS_Store
+
+# General IDE junk
+.vscode/
+.idea/
+
+# Log files
+*.log
