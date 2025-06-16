@@ -3,11 +3,13 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
-
+import google.generativeai as genai
+import os
 from database import SessionLocal, engine, Base
 from models import Project, Task, User
 from fastapi import Body
 from auth import hash_password, verify_password, create_access_token, decode_access_token
+from ai_router import router as ai_router
 
 app = FastAPI()
 app.add_middleware(
@@ -17,6 +19,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(ai_router)
+
 def generate_default_tasks(project_id, db):
     default_tasks = [
         {"name": "Receive Order", "role": "Project Coordinator"},
@@ -186,3 +191,4 @@ def get_current_user(authorization: Optional[str] = Header(None), db: Session = 
         raise HTTPException(status_code=401, detail="User not found")
     
     return user
+

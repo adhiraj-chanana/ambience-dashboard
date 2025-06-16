@@ -23,6 +23,7 @@ function Navbar() {
         <Link to="/tasks" style={styles.link}>Tasks</Link>
         <Link to="/dashboard" style={styles.link}>Dashboard</Link>
         <Link to="/analytics" style={styles.link}>Analytics</Link>
+        <Link to="/ai" style={styles.link}>Ambience AI</Link>
         <button onClick={handleLogout} style={styles.logoutButton}>Logout</button>
       </div>
     </div>
