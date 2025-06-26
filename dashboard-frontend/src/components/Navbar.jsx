@@ -1,14 +1,29 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
+import api from '../api';
 
 function Navbar() {
   const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [notifCount, setNotifCount] = useState(0);
 
   const handleLogout = () => {
     logout();
     navigate('/');
+  };
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
+  const fetchNotifications = async () => {
+    try {
+      const res = await api.get("/notifications");
+      setNotifCount(res.data.length);
+    } catch (err) {
+      console.error("Failed to load notifications");
+    }
   };
 
   return (
@@ -21,7 +36,12 @@ function Navbar() {
       <div style={styles.links}>
         <Link to="/projects" style={styles.link}>Projects</Link>
         <Link to="/tasks" style={styles.link}>Tasks</Link>
-        <Link to="/dashboard" style={styles.link}>Dashboard</Link>
+
+        <div style={styles.alertLinkWrapper}>
+          <Link to="/notifications" style={styles.link}>Alerts</Link>
+          {notifCount > 0 && <div style={styles.badge}>{notifCount}</div>}
+        </div>
+
         <Link to="/analytics" style={styles.link}>Analytics</Link>
         <Link to="/ai" style={styles.link}>Ambience AI</Link>
         <button onClick={handleLogout} style={styles.logoutButton}>Logout</button>
@@ -56,12 +76,32 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     gap: '30px',
+    position: 'relative',
+  },
+  alertLinkWrapper: {
+    position: 'relative',
   },
   link: {
     color: '#fff',
     textDecoration: 'none',
     fontWeight: '500',
     fontSize: '1rem',
+    position: 'relative',
+  },
+  badge: {
+    position: 'absolute',
+    top: '-5px',
+    right: '-10px',
+    backgroundColor: 'red',
+    color: 'white',
+    borderRadius: '50%',
+    fontSize: '0.7rem',
+    width: '18px',
+    height: '18px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontWeight: 'bold',
   },
   logoutButton: { 
     backgroundColor: '#fff',
