@@ -47,7 +47,7 @@ function ProjectDetails() {
   const handleDrawingVersionUpdate = async () => {
     try {
       await api.patch(`/projects/${project.id}/drawing-version?version=${project.drawingVersion}`);
-      alert("Drawing version updated and users notified.");
+      alert("Drawing version updated. Please inform the draftsman that this has been changed.");
       fetchProject(); // refresh project
     } catch (err) {
       console.error("Failed to update drawing version", err);

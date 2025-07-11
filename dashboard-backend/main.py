@@ -12,6 +12,7 @@ from auth import hash_password, verify_password, create_access_token, decode_acc
 from ai_router import router as ai_router
 from schemas import ProjectCreateFull
 from fastapi import Query
+from ai_router import router as ai_router
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
@@ -158,6 +159,12 @@ class UserCreate(BaseModel):
     username: str
     password: str
     role: str
+
+@app.get("/projects")
+def list_projects(db: Session = Depends(get_db)):
+    projects = db.query(Project).all()
+    return [{"id": p.id, "name": p.name} for p in projects]
+
 
 @app.post("/register")
 def register(user: UserCreate, db: Session = Depends(get_db)):
